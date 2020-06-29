@@ -1,0 +1,26 @@
+{
+    "demo":{
+        "controller" :"demo",
+        "function" : "demo_function"
+    },
+    "check_user_availability":{
+        "controller" :"user_auth",
+        "function" : "checkUserAvailability"      
+    },
+    "reg_otp_request":{
+        "controller" :"user_auth",
+        "function" : "regOtpRequest"      
+    },    
+    "reg_otp_verify":{
+        "controller" :"user_auth",
+        "function" : "regOtpVerify"      
+    },
+    "username_login":{
+        "controller" :"user_auth",
+        "function" : "usernameLogin"      
+    },
+    "token":{
+        "controller" :"user_auth",
+        "function" : "token_generate"      
+    }
+}

@@ -1,0 +1,1 @@
+exports.langEG =require('./lang-eg'); 
