@@ -27,6 +27,8 @@ router.use(async (req,res,next)=>{
         const bearerToken = bearer[1];
         req.token = bearerToken;
     }
+    originalUrl_array=req.originalUrl.split('/');
+    req.originPath=originalUrl_array[1]
     middlewareObj.middleware(req,res,next);
 });
 
