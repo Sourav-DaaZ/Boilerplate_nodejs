@@ -141,7 +141,8 @@ var var_user_auth = class user_auth extends coreController{
     usernameLogin(req,res){
         const validationRule = {
             "username": "required|email",
-            "password" : "required"
+            "password" : "required",
+            "deviceid" : "required"
         }
         this.utils.validator(req.body,res,validationRule,()=>{
             this.userAuth.findOne({email: req.body.username,password: req.body.password},(err,obj)=>{
@@ -151,20 +152,37 @@ var var_user_auth = class user_auth extends coreController{
                 if(obj!=null){
                     let accessToken = this.jwtToken.generateAccessToken(req.body.username)
                     let refreshToken = this.jwtToken.generateRefreshToken(req.body.username)
-                    var conditions = {email: req.body.username}
-                    , update = {refresh_token : refreshToken}
-                    , options = { multi: true };
-                    this.token.updateOne(conditions, update, options,(err, numAffected)=>{
-                        if (err){
-                        // If err 
+                    this.token.findOne({email: req.body.username},(err,obj)=>{
+                        if(err){
+                            //pass
                         }
-                        else{
-                            res.json({
-                                "accessToken" : accessToken,
-                                "refreshToken" : refreshToken
-                            }); 
+                        if(obj){
+                            let refresh_token_flag = 0;
+                            for (let i=0;i<obj.refresh_token.length;i++){
+                                if(obj.refresh_token[i].device_id==req.body.deviceid){
+                                    obj.refresh_token[i].token=refreshToken
+                                    refresh_token_flag =1
+                                }   
+                            }
+                            if(refresh_token_flag==0){
+                                obj.refresh_token.push({token:refreshToken,device_id:req.body.deviceid})
+                            }
+                            var conditions = {email: req.body.username}
+                            , update = {refresh_token:obj.refresh_token}
+                            , options = { multi: true };
+                            this.token.updateOne(conditions, update, options,(err, numAffected)=>{
+                                if(err){
+                                    //
+                                }
+                                else{
+                                    res.json({
+                                        "accessToken" : accessToken,
+                                        "refreshToken" : refreshToken
+                                    }); 
+                                }
+                            })
                         }
-                    });
+                    })
                 }
                 else{
                     res.json({

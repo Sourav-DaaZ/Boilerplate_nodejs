@@ -11,7 +11,13 @@ const tokenSchema= new Schema({
         required:[true,'Required!']    
     },
     refresh_token:{
-        type:String  
+        type : Array,
+        token: {
+            type : String
+        } ,
+        device_id: {
+            type : String
+        }
     }
 }); 
 

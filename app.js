@@ -37,6 +37,7 @@ db.conn(process.env.NODE_ENV);
 //1.End point url name -> "demo"
     app.use('/demo',routes.demoRoute);
     app.use('/user_auth',routes.userauth);
+    app.use('/post_login_auth',routes.postloginuserauth)
 //2.
 
 ////////////////////////////////////////////////////////////////

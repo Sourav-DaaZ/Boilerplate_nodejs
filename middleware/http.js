@@ -19,6 +19,19 @@ module.exports=(req,res,next)=>{
             next();
         }
     }
+    else if(path=="post_login_auth")
+    {
+        middlewareFunction.loginAuth(req.token,(username)=>{
+            if(username!=null){
+                next();
+            }
+            else{
+                res.json({
+                    "message":"login failed"
+                });
+            }
+        })
+    }
     else{
         next();
     }
