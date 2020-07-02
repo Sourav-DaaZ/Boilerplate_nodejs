@@ -21,6 +21,10 @@
     },
     "token":{
         "controller" :"user_auth",
-        "function" : "token_generate"      
+        "function" : "tokenGenerate"      
+    },
+    "login_checker":{
+        "controller" :"user_auth",
+        "function" : "loginChecker"      
     }
 }

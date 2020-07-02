@@ -174,7 +174,7 @@ var var_user_auth = class user_auth extends coreController{
             })
         })
     }
-    token_generate (req,res){
+    tokenGenerate (req,res){
         const validationRule = {
             "username" : "required",
             "refresh_token": "required"
@@ -205,6 +205,11 @@ var var_user_auth = class user_auth extends coreController{
                 }
             })
         })
+    }
+    loginChecker(req,res){
+        res.json({
+            "message" : "Successfully loged in"
+        });
     }
 }
 module.exports = var_user_auth

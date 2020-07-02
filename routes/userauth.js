@@ -92,9 +92,8 @@ router.post('/token', async function (req, res, next) {
 // 
 // 
 router.post('/login_checker', async function (req, res, next) {
-    res.json({
-        "message" : "Successfully loged in"
-    });
+    action = 'login_checker';
+    controllerObj.controller(req,res,action);
 });
 
 module.exports=router;
