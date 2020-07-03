@@ -195,26 +195,40 @@ var var_user_auth = class user_auth extends coreController{
     tokenGenerate (req,res){
         const validationRule = {
             "username" : "required",
-            "refresh_token": "required"
+            "refresh_token": "required",
+            "deviceid" : 'required'
         }
         this.utils.validator(req.body,res,validationRule,()=>{
-            this.token.findOne({email: req.body.username, refresh_token:req.body.refresh_token},(err,obj)=>{
+            this.token.findOne({email: req.body.username},(err,obj)=>{
                 if(err){
                     //
                 }
                 if(obj!=null){
-                    this.jwtToken.verifyRefreshToken(req.body.refresh_token,(accessToken)=>{
-                        if (accessToken!=null){
-                            res.json({
-                                "accessToken" : accessToken
-                            }); 
+                    let auth_flag = 0;
+                    for(let i=0;i<obj.refresh_token.length;i++){
+                        if(obj.refresh_token[i].token == req.body.refresh_token && obj.refresh_token[i].device_id == req.body.deviceid){
+                            auth_flag = 1;
                         }
-                        else{
-                            res.json({
-                                "message" : "Invalid Token"
-                            }); 
-                        }
-                    })
+                    }
+                    if(auth_flag==1){
+                        this.jwtToken.verifyRefreshToken(req.body.refresh_token,(accessToken)=>{
+                            if (accessToken!=null){
+                                res.json({
+                                    "accessToken" : accessToken
+                                }); 
+                            }
+                            else{
+                                res.json({
+                                    "message" : "Invalid Token"
+                                }); 
+                            }
+                        })
+                    }
+                    else{
+                        res.json({
+                            "message" : "Invalid Token"
+                        });  
+                    }
                 }
                 else{
                     res.json({
