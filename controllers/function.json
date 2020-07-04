@@ -26,5 +26,9 @@
     "login_checker":{
         "controller" :"user_auth",
         "function" : "loginChecker"      
+    },
+    "logout":{
+        "controller" :"postLoginUserAuth",
+        "function" : "logout"      
     }
 }
