@@ -23,4 +23,14 @@ module.exports= class jwt_AToken{
             callback(accessToken)
         })
     }
+    async ger_user(accessToken){
+        this.jwt = require ('jsonwebtoken');
+        this.dotenv = require('dotenv');
+        const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET
+        const user_ = await this.jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (err, data) => {
+            //if (err) return callback(null)
+            return data.user;
+        })
+        return user_
+    }
 }

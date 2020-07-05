@@ -1,6 +1,6 @@
 module.exports = (key) => {
     var data={
-        "ERR001" : "demo"
+        "ERR001" : "Unable to logging out"
     };
     try{
       if(data[key]==null){

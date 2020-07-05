@@ -13,9 +13,9 @@ var var_postloginuserauth = class postloginuserauth extends coreController{
         const validationRule = {
             "deviceid" : "required"
         }
-        req.body.username = 'a1@a.com'
-        this.utils.validator(req.body,res,validationRule,()=>{
-            this.token.findOne({email: req.body.username},(err,obj)=>{
+        this.utils.validator(req.body,res,validationRule,async ()=>{
+            let username = await this.jwtToken.ger_user(req.token)
+            this.token.findOne({email: username},(err,obj)=>{
                 if(err){
                     //err
                 }
@@ -28,12 +28,10 @@ var var_postloginuserauth = class postloginuserauth extends coreController{
                         }   
                     }
                     if(search_flag==0){
-                        res.json({
-                            'msg' : "unable to logging out"
-                        })
+                        this.errRes.sendResponse(res,'ERR001')
                         return
                     }
-                    var conditions = {email: req.body.username}
+                    var conditions = {email: username}
                     , update = {refresh_token:obj.refresh_token}
                     , options = { multi: true };
                     this.token.updateOne(conditions, update, options,(err, numAffected)=>{
